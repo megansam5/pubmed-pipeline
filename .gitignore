@@ -1,0 +1,17 @@
+__pycache__
+.ipynb_checkpoints
+venv/
+.pytest_cache
+
+.terraform
+
+.venv
+.env
+*.env
+
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars
+*.tfvars
