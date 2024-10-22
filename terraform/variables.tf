@@ -42,3 +42,7 @@ variable "SECURITY_GROUP_ID" {
 variable "ACCOUNT_ID" {
   type = string
 }
+
+variable "PIPELINE_ECR_REPO" {
+  type = string
+}

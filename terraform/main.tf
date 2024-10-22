@@ -6,7 +6,7 @@ provider "aws" {
 
 # ECR with pipeline image
 data "aws_ecr_image" "pipeline_image" {
-  repository_name = "c13-megan-pharma-pipeline"
+  repository_name = var.PIPELINE_ECR_REPO
   image_tag       = "latest"
 }
 

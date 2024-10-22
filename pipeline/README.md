@@ -1,36 +1,86 @@
 # Pudmed Data Match
 
-## Set up (inside pipeline folder)
-1. Activate a virtual environment
-2. Install dependencies with `pip install -r requirements.txt`
-3. Download the smallest spacy model with `python3 -m spacy download en_core_web_sm`
-4. Create a `.env` file with the following:
+## 🌟 Overview
+
+The **Pipeline** component of this project is designed to automate the normalization of XML data files uploaded to an S3 bucket. Utilizing Natural Language Processing (NLP) techniques, the system processes incoming XML files to extract and normalize relevant information, ensuring that the data is consistent and ready for further analysis.This task leverages powerful NLP tools like **spaCy** for natural language understanding, **RapidFuzz** for fuzzy string matching and similarity calculations, and **pandarallel** for efficient multiprocessing, ensuring that data normalization is fast and scalable.
+
+
+## 🔍 Folder Structure
+
+- `Dockerfile`: Docker configuration for the project
+- `dockerise.sh`: Shell script to build and push Docker image to AWS ECR
+- `extract.py`: Extracts XML file from S3
+- `transform.py`: Cleans and transforms the extracted data
+- `load.py`: Loads the transformed data into another S3 bucket
+- `pipeline.py`: Main ETL pipeline script that orchestrates the workflow
+- `requirements.txt`: Required Python packages
+
+## 🛠️ Prerequisites
+- **Docker** installed.
+- Setup **ECR** repository to store analyser pipeline docker image.  
+- If no **ECR** then create one with:
 ```
-AWS_ACCESS_KEY=XXX
-AWS_SECRET_ACCESS_KEY=XXXX
-INPUT_BUCKET_NAME=XXX
-OUTPUT_BUCKET_NAME=XXX
-FOLDER_NAME=XX
+aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin <YOUR_ECR_REGISTRY_ID>.dkr.ecr.eu-west-2.amazonaws.com
+aws ecr create-repository --repository-name <ECR_REP_NAME> --region eu-west-2
 ```
 
-## Running locally
-Run the pipeline with `python3 pipeline.py`
-- This will print out all the times.
+Optional:
+- **Python** installed (For running locally)
 
-## Running on a Docker File
-- Run `docker build -t IMAGE_NAME .` to create the docker image.
-- Run `docker run --env-file .env IMAGE_NAME` to run the image.
+## ⚙️ Setup 
+Create a `.env` file and fill with the following variables
+```bash
+# AWS Configuration
+AWS_ACCESS_KEY=<your_aws_access_key>
+AWS_SECRET_ACCESS_KEY=<your_aws_secret_access_key>
 
 
-## Creating and pushing Docker file to ECR
-- Authenticate docker with `aws ecr get-login-password --region YOUR_AWS_REGION | docker login --username AWS --password-stdin YOUR_AWS_ACCOUNT_ID.dkr.ecr.YOUR_AWS_REGION.amazonaws.com`
-- Create an ECR repository with `aws ecr create-repository --repository-name YOUR_REPOSITORY_NAME --region YOUR_AWS_REGION`
-- Build the image with the correct platform with `docker build -t YOUR_IMAGE_NAME . --platform "linux/amd64"`
-- Tag the image with `docker tag YOUR_IMAGE_NAME:latest YOUR_AWS_ACCOUNT_ID.dkr.ecr.YOUR_AWS_REGION.amazonaws.com/YOUR_REPOSITORY_NAME:latest`
-- Push the image to the ECR with `docker push YOUR_AWS_ACCOUNT_ID.dkr.ecr.YOUR_AWS_REGION.amazonaws.com/YOUR_REPOSITORY_NAME:latest`d
+# S3 Bucket Configuration
+BUCKET_NAME=<s3_bucket_name>
+INPUT_BUCKET_NAME=<s3_input_bucket_name>
+OUTPUT_BUCKET_NAME=<s3_output_bucket_name>
+FOLDER_NAME=<folder_name_in_s3_input_bucket>
 
-## Next steps
-Move into the terraform folder to create the AWS services, using `cd ../terraform`
+# ECR Configuration
+ECR_REGISTRY_ID=<id_of_ecr_repo_to_store_image>
+ECR_REPO_NAME=<name_of_ecr_repo_to_store_image>
+IMAGE_NAME=<docker_image_name>
+```
+
+### ☁️ Pushing to the Cloud
+To deploy the overall cloud infrastructure the pipeline must be containerised and hosted on the cloud:
+
+1. Make sure you have the Docker application running in the background
+2. Dockerise and upload the application:
+    ```bash
+    bash dockerise.sh
+    ```
+    This will:
+    - Authenticate your aws credentials with docker
+    - Create the docker image
+    - Tag the docker image
+    - Upload tagged image to the ECR repository
+
+### 💻 Running Locally (MacOS, **Optional**)
+The pipeline can also be ran locally by:
+
+1. Creating and activating virtual environment:
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate
+    ```
+2. Install requirements:
+    ```bash
+    pip install -r requirements.txt
+    ```
+3. Download the smallest spacy model:
+    ```bash
+    python3 -m spacy download en_core_web_sm
+    ```
+4. Running the pipeline:
+    ```bash
+    python3 pipeline.py
+    ```
 
 
 ## Comparing Different Similarity Techniques
