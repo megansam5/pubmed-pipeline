@@ -54,7 +54,7 @@ def get_author_details(author: ET.Element) -> dict:
 
 def get_email(affiliation: str) -> str | None:
     """Returns the email if there is one."""
-    email_pattern = r"[\d\w]+\.?[\w\d]*\.?[\w\d]*@.*(?:\.)"
+    email_pattern = r"[\w\.-]+@[\w\.-]+\.\w+"
     match = re.search(email_pattern, affiliation)
     return match[0] if match is not None else None
 

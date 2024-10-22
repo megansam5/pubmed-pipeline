@@ -5,3 +5,4 @@ rapidfuzz
 boto3
 python-dotenv
 pandarallel
+pytest

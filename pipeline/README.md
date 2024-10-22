@@ -14,6 +14,8 @@ The **Pipeline** component of this project is designed to automate the normaliza
 - `load.py`: Loads the transformed data into another S3 bucket
 - `pipeline.py`: Main ETL pipeline script that orchestrates the workflow
 - `requirements.txt`: Required Python packages
+- `test_extract.py`: Tests for the extract functionality
+- `test_transform.py`: Tests for the transformation functionality
 
 ## 🛠️ Prerequisites
 - **Docker** installed.
