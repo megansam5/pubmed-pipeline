@@ -1,8 +1,24 @@
 # 🌐 Automated NLP Pubmed Normalization Pipeline
 
+One of the challenges that arrise when collating research papers from various sources is the issue of inconsistent naming of organisations. This can occur when the same organisation is referred to by different names in different papers, making it difficult to accurately match and collate the data.
+
+For example, some publications might include
+
+_Harvard University_
+
+while others might include
+
+_Harvard Medical School_
+
+however both of them refer to essentially the same medical institution.
+
+This inconsistency in naming can also have an impact on the results of data analysis, as it can lead to errors in data aggregation and hinder the ability to accurately compare the findings of different studies.
+
+
 ## 📜 Project Overview
 
-This project implements a fully automated data normalization pipeline using various AWS services, with a specific focus on leveraging Natural Language Processing (NLP) techniques. The system is designed to streamline the workflow of uploading XML files to an S3 bucket, processing those files to normalize the data, and sending email notifications throughout the process. 
+This project is a fully automated data normalization pipeline using various AWS services, with a specific focus on leveraging Natural Language Processing (NLP) techniques to standardize the naming of organizations and institutions. When a XML file is uploaded to an S3 bucket, this system processes the file to normalize the data, sending email notifications throughout the process, before uploading the cleaned data as a csv file to another S3 bucket.
+
 
 ## 🛠️ Tools & Technologies
 
